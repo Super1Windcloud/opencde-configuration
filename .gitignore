@@ -1,8 +1,5 @@
 # Local plugin dependencies (reinstallable)
 node_modules
-package.json
-package-lock.json
-bun.lock
 
 # Secrets and machine-local runtime state
 service.json
