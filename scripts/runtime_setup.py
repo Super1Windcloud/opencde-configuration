@@ -216,10 +216,14 @@ def setup(repo, home, selected, run, deploy, env, pending, failures, dry=False, 
     if 'opencode' in selected:
         path = home / '.config/opencode/opencode.json'
         value = read_json(path)
+        mcp = value.setdefault('mcp', {})
+        configured = mcp.setdefault('servers', {})
         for name, entry in servers.items():
-            value.setdefault('mcp', {})[name] = {'type': 'local', 'command': [entry['command'], *entry['args']],
-                                                'environment': entry['env'], 'enabled': True}
-        value.setdefault('mcp', {})['figma'] = {'type': 'remote', 'url': 'https://mcp.figma.com/mcp', 'enabled': True}
+            mcp.pop(name, None)  # Remove managed V1 entries before writing their V2 replacement.
+            configured[name] = {'type': 'local', 'command': [entry['command'], *entry['args']],
+                                'environment': entry['env'], 'disabled': False}
+        mcp.pop('figma', None)
+        configured['figma'] = {'type': 'remote', 'url': 'https://mcp.figma.com/mcp', 'disabled': False}
         write(path, value)
     if 'grok' in selected:
         path = home / '.grok/config.toml'

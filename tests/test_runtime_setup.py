@@ -60,7 +60,7 @@ class RuntimeTest(unittest.TestCase):
         self.assertTrue(config['mcpServers']['mobile-mcp']['command'].endswith('/mcp-server-mobile'))
         self.assertIn('mobile-mcp', tomllib.loads((self.home / '.codex/config.toml').read_text())['mcp_servers'])
         self.assertIn('mobile-mcp', json.loads((self.home / '.gemini/config/mcp_config.json').read_text())['mcpServers'])
-        opencode = json.loads((self.home / '.config/opencode/opencode.json').read_text())['mcp']
+        opencode = json.loads((self.home / '.config/opencode/opencode.json').read_text())['mcp']['servers']
         self.assertEqual(opencode['figma']['url'], 'https://mcp.figma.com/mcp')
         self.assertEqual(opencode['mobile-mcp']['type'], 'local')
         self.assertTrue(any('离线' in item for item in self.pending))
@@ -134,6 +134,30 @@ class RuntimeTest(unittest.TestCase):
 
 
 
+    def test_opencode_v2_registration_removes_managed_duplicates_and_is_idempotent(self):
+        path = self.home / '.config/opencode/opencode.json'
+        path.parent.mkdir(parents=True)
+        path.write_text(json.dumps({'mcp': {
+            'reqable': {'type': 'local', 'command': ['old']},
+            'custom-v1': {'type': 'remote', 'url': 'https://legacy.invalid'},
+            'servers': {'reqable': {'type': 'remote', 'url': 'https://old.invalid'},
+                        'custom-v2': {'type': 'remote', 'url': 'https://custom.invalid'}}}}))
+        self.call(['opencode'], offline=True, mode='core')
+        once = json.loads(path.read_text())
+        self.env = {'PATH': '/usr/bin:/bin'}  # A second installer process starts with a fresh environment.
+        self.call(['opencode'], offline=True, mode='core')
+        self.assertEqual(json.loads(path.read_text()), once)
+        self.assertNotIn('reqable', once['mcp'])
+        self.assertIn('custom-v1', once['mcp'])
+        self.assertIn('custom-v2', once['mcp']['servers'])
+        entry = once['mcp']['servers']['reqable']
+        self.assertEqual(entry['type'], 'local')
+        self.assertNotIn('url', entry)
+        self.assertFalse(entry['disabled'])
+        self.assertIn('PATH', entry['environment'])
+        self.assertNotIn('env', entry)
+        self.assertNotIn('enabled', entry)
+
     def test_install_replaces_managed_mcp_entry_without_reviving_legacy_url(self):
         (self.repo / 'scripts').mkdir()
         shutil.copy2(SCRIPTS / 'runtime_setup.py', self.repo / 'scripts/runtime_setup.py')
@@ -144,8 +168,8 @@ class RuntimeTest(unittest.TestCase):
             harness.install(self.repo, self.home, ['opencode'], offline=True, dependencies='core')
         value = json.loads(config.read_text())
         self.assertEqual(value['custom'], 'keep')
-        self.assertEqual(value['mcp']['mobile-mcp']['type'], 'local')
-        self.assertNotIn('url', value['mcp']['mobile-mcp'])
+        self.assertEqual(value['mcp']['servers']['mobile-mcp']['type'], 'local')
+        self.assertNotIn('url', value['mcp']['servers']['mobile-mcp'])
 
 
 if __name__ == '__main__':

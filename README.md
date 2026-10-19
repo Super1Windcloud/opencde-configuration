@@ -72,9 +72,7 @@
 - **MCP**：`mobile-mcp`（本地 stdio，`npx -y @mobilenext/mobile-mcp@latest`），并注入 `PATH` / `ANDROID_HOME` / `ANDROID_SDK_ROOT` 以访问 Android SDK
 - **username**：`super`
 
-> 该文件使用的是 V1 形态字段名（`provider`、`options`、`mcp.<name>`、`enabled`），
-> OpenCode V2 会读取并在内存中归一化，功能正常。如需迁移到 V2 原生写法，对应关系为
-> `provider`→`providers`、`options`→`settings`、`mcp.<name>`→`mcp.servers.<name>`、`enabled`→`disabled`（取反）。
+> MCP 统一使用 V2 的 `mcp.servers.<name>`、`environment`、`disabled` 字段；其余 Provider 等配置继续沿用当前兼容格式。安装脚本删除同名托管 MCP 的旧字段，保留其他服务配置。
 
 ## 必需的凭据（环境变量）
 

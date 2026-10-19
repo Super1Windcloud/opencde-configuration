@@ -1,5 +1,14 @@
 # 安装验证记录
 
+## MCP V2 配置补缺验证（2026-10-19）
+
+- `python3 -B -m unittest discover -s tests`：29 项通过；新增托管 MCP 新旧字段清理、V2 environment/disabled、重复安装及其他服务保留的回归用例。
+- MCP 统一使用 `mcp.servers.<name>`、`environment`、`disabled`；Provider 等其他配置沿用原格式。
+- `~/.config/opencode` 从 77f49f3 快进到 f2e2d2f，原始配置和 patch 备份到 `~/.harness-backups/opencode-sync-20261019-175645/`，本轮脚本/配置变更已同步到运行目录。
+- 真实执行 `opencode reload`，并通过 `/api/config` 核对当前文件的 mobile-mcp / reqable 各只有一份、均启用，环境 PATH 保留、mobile-mcp 的 ANDROID_HOME 保留。只输出检查结果，不记录解析后的 Provider 凭据。
+- 未调用设备工具或付费模型。
+
+
 ## 单 agent 安装隔离验证（2026-10-19）
 
 - `python3 -B -m unittest discover -s /Users/super/super/opencde-configuration/tests`：28 项通过。

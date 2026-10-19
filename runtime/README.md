@@ -38,7 +38,7 @@ source ~/.local/share/harness-testkit/opencode/env.sh
 - Codex：更新 `~/.codex/config.toml` 的 `mobile-mcp` / `playwright` 表，保留其他服务器和项目信任。
 - Claude Code：更新普通 HOME 与显式 CLAUDE_CONFIG_DIR 的用户 MCP 配置，保留其他服务器和凭据。
 - Antigravity：合并写入 `~/.gemini/config/mcp_config.json`。
-- OpenCode：合并写入 `~/.config/opencode/opencode.json` 的本地 MCP，并登记 Figma 官方远程 MCP。
+- OpenCode：合并写入 `~/.config/opencode/opencode.json` 的 `mcp.servers` 本地 MCP，并登记 Figma 官方远程 MCP；使用 V2 的 `environment` / `disabled` 字段，清理同名托管 V1 条目。
 
 core 只登记 mobile-mcp，full 另外登记 Playwright MCP。MCP 使用运行目录下的实际可执行路径，并携带 SDK、PATH 和浏览器环境。离线登记不代表对应服务已安装或可连接。
 
