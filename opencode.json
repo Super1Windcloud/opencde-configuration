@@ -35,6 +35,18 @@
         "ANDROID_HOME": "~/Library/Android/sdk",
         "ANDROID_SDK_ROOT": "~/Library/Android/sdk"
       }
+    },
+    "reqable": {
+      "type": "local",
+      "command": [
+        "/opt/homebrew/bin/npx",
+        "-y",
+        "reqable-mcp-server"
+      ],
+      "enabled": true,
+      "environment": {
+        "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+      }
     }
   },
   "agent": {},
