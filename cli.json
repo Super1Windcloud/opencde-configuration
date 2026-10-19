@@ -1,0 +1,33 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "theme": {
+    "name": "nord"
+  },
+  "diffs": {
+    "wrap": "word"
+  },
+  "session": {
+    "sidebar": "hide",
+    "scrollbar": true,
+    "thinking": "show",
+    "permissions": "autoaccept",
+    "image_preview": false,
+    "verbosity": "high"
+  },
+  "animations": true,
+  "highlights": true,
+  "scroll": {
+    "acceleration": true
+  },
+  "prompt": {
+    "image_preview": true,
+    "paste": "full"
+  },
+  "terminal": {
+    "title": true,
+    "copy": "manual"
+  },
+  "attention": {
+    "sound": true
+  }
+}
