@@ -1,0 +1,9 @@
+{
+  "roots": {
+    "opencode": "."
+  },
+  "selected": [
+    "opencode",
+    "shared"
+  ]
+}

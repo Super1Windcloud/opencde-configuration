@@ -4,3 +4,11 @@ node_modules
 # Secrets and machine-local runtime state
 service.json
 *.bak*
+
+__pycache__/
+
+*.pyc
+
+.harness-backups/
+
+vendor/
