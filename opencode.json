@@ -48,6 +48,23 @@
           "ANDROID_HOME": "~/Library/Android/sdk",
           "ANDROID_SDK_ROOT": "~/Library/Android/sdk"
         }
+      },
+      "mitmproxy-mcp": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "--directory",
+          "~/.local/share/harness-mitmproxy/opencode",
+          "--no-config",
+          "--python",
+          "3.13",
+          "--with",
+          "mcp<2",
+          "--from",
+          "mitmproxy-mcp==0.6.1",
+          "mitmproxy-mcp"
+        ],
+        "disabled": false
       }
     }
   },
